@@ -5,3 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+puts "Generating seeds..."
+
+User.create(username: "rkillion",first_name: "Bob")
+
+puts "...done seeding!"

@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  universe: one
+  title: MyString
+  max_zoom_level: 1
+
+two:
+  universe: two
+  title: MyString
+  max_zoom_level: 1

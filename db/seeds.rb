@@ -8,6 +8,4 @@
 
 puts "Generating seeds..."
 
-User.create(username: "rkillion",first_name: "Bob")
-
 puts "...done seeding!"

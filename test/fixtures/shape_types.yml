@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  user: one
+  color: MyString
+  shape_class: one
+
+two:
+  title: MyString
+  user: two
+  color: MyString
+  shape_class: two

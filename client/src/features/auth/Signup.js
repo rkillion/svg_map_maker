@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import { useHistory, Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { userUpdate } from './userSlice'
 
 function Signup({ setCurrentUser }) {
   const history = useHistory()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
-  
+  const dispatch = useDispatch();
+
   const handleSubmit = (event) => {
     event.preventDefault()
     fetch('/signup', {
@@ -23,8 +26,8 @@ function Signup({ setCurrentUser }) {
       .then(res => {
         if (res.ok) {
           res.json().then(user => {
-            setCurrentUser(user)
-            // history.push('/groups')
+            dispatch(userUpdate(user))
+            history.push('/viewer') //you will actually need to push to /newUniverse once you make it
           })
         } else {
           res.json().then(errors => {

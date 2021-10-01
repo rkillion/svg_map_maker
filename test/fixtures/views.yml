@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  tile: one
+  focus_x: 1.5
+  focus_y: 1.5
+  title: MyString
+
+two:
+  user: two
+  tile: two
+  focus_x: 1.5
+  focus_y: 1.5
+  title: MyString

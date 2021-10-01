@@ -2,10 +2,14 @@ import styled from 'styled-components';
 import React, { useState, useEffect } from 'react'
 import AuthenticatedApp from './AuthenticatedApp'
 import UnauthenticatedApp from './UnauthenticatedApp'
+import { useDispatch, useSelector } from 'react-redux'
+import { userUpdate } from '../features/auth/userSlice.js'
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
   const [authChecked, setAuthChecked] = useState(false)
+  const user = useSelector((state)=>state.user.current)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     fetch('/me', {
@@ -14,7 +18,7 @@ function App() {
       .then(res => {
         if (res.ok) {
           res.json().then((user) => {
-            setCurrentUser(user)
+            dispatch(userUpdate(user))
             setAuthChecked(true)
           })
         } else {
@@ -26,7 +30,7 @@ function App() {
   if(!authChecked) { return <div></div>}
   return (
     <AppWindow className="App">
-      {currentUser ? (
+      {user.id ? (
         <AuthenticatedApp />
       ) : (
         <UnauthenticatedApp 

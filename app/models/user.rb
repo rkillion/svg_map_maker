@@ -4,4 +4,6 @@ class User < ApplicationRecord
     has_many :universes, dependent: :destroy
     has_many :worlds
     has_many :tiles
+    has_many :shapes
+    has_many :views
 end

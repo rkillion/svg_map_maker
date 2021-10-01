@@ -1,22 +1,18 @@
 import Appbar from './Appbar';
 import Viewport from '../features/viewport/Viewport';
+import { Switch, Route } from 'react-router-dom';
 
 function AuthenticatedApp() {
-    // const handleLogout = () => {
-    //     fetch(`/logout`, {
-    //       method: 'DELETE'
-    //     })
-    //       .then(res => {
-    //         if (res.ok) {
-    //           setCurrentUser(null)
-    //         }
-    //       })
-    //   }
 
     return (
         <main>
             <Appbar />
-            <Viewport />
+            <Switch>
+                <Route path="/viewer">
+                    <Viewport />
+                </Route>
+                {/* <Redirect to="/newUniverse" /> */}
+            </Switch>
         </main>
     )
 }

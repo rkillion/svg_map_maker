@@ -11,14 +11,26 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import { useDispatch, useSelector } from 'react-redux'
+import { userUpdate } from '../features/auth/userSlice';
 
 export default function Appbar() {
-  const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const user = useSelector((state)=>state.user.current)
+  const dispatch = useDispatch()
 
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
+  console.log("User",user);
+
+  const handleLogout = () => {
+        fetch(`/logout`, {
+          method: 'DELETE'
+        })
+          .then(res => {
+            if (res.ok) {
+              dispatch(userUpdate({}))
+            }
+          })
+      }
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -56,7 +68,7 @@ export default function Appbar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             SVG Fantasy Mapmaker
           </Typography>
-          {auth && (
+          {user.id && (
             <div>
               <IconButton
                 size="large"
@@ -85,6 +97,7 @@ export default function Appbar() {
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleLogout} style={{color: "red"}}>Logout</MenuItem>
               </Menu>
             </div>
           )}

@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Redirect, useHistory, Link } from 'react-router-dom'
-import { worldAdded } from '../worlds/worldsSlice'
+import { userUpdate } from './userSlice'
 
-function Login({ setCurrentUser }) {
+function Login() {
   const history = useHistory()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const worlds = useSelector((state)=>state.worlds.entities)
   const dispatch = useDispatch()
-
-  console.log(worlds);
-  useEffect(() => {
-    dispatch(worldAdded("newWorld"));
-  }, [])
   
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -27,12 +21,10 @@ function Login({ setCurrentUser }) {
       .then(res => {
         if (res.ok) {
           res.json().then(user => {
-            setCurrentUser(user)
-            history.push('/groups')
+            dispatch(userUpdate(user))
+            history.push('/viewer')
           })
         } else {
-          // setCurrentUser({ username: "Bob" })
-        //   history.push('/groups')
           res.json().then(errors => {
             console.error(errors)
           })

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_01_013432) do
+ActiveRecord::Schema.define(version: 2021_10_02_134248) do
 
   create_table "shape_classes", force: :cascade do |t|
     t.string "title"
@@ -92,8 +92,10 @@ ActiveRecord::Schema.define(version: 2021_10_01_013432) do
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "world_id", null: false
     t.index ["tile_id"], name: "index_views_on_tile_id"
     t.index ["user_id"], name: "index_views_on_user_id"
+    t.index ["world_id"], name: "index_views_on_world_id"
   end
 
   create_table "worlds", force: :cascade do |t|
@@ -119,6 +121,7 @@ ActiveRecord::Schema.define(version: 2021_10_01_013432) do
   add_foreign_key "universes", "users"
   add_foreign_key "views", "tiles"
   add_foreign_key "views", "users"
+  add_foreign_key "views", "worlds"
   add_foreign_key "worlds", "universes"
   add_foreign_key "worlds", "users"
 end

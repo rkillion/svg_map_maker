@@ -1,47 +1,46 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const fetchWorlds = createAsyncThunk("worlds/fetchWorlds", (id) => {
+export const fetchUniverses = createAsyncThunk("universes/fetchUniverses", () => {
     // return a Promise containing the data we want
-    return fetch(`/worlds/${id}`)
+    return fetch("/universes")
       .then((response) => response.json())
       .then((data) => data);
   });
 
 const initialState = {
-    entities: [], // array of worlds belonging to the user
-    currentWorld: {},
+    entities: [], // array of universes belonging to the user
     status: "idle", // loading state
   };
 
-const worldsSlice = createSlice({
-    name: "worlds",
+const universesSlice = createSlice({
+    name: "universes",
     initialState,
     reducers: {
-      worldAdded(state, action) {
+      universeAdded(state, action) {
         // using createSlice lets us mutate state!
         state.entities.push(action.payload);
       },
-      worldUpdated(state, action) {
+      universeUpdated(state, action) {
         //configure changes like this {id: 1,changes: {key1:value1, key2:value2...}}
-        const world = state.entities.find((world) => world.id === action.payload.id);
+        const universe = state.entities.find((universe) => universe.id === action.payload.id);
         let fields = Object.keys(action.payload.changes)
         fields.forEach(field => {
-            world[field] = action.payload.change[field];
+            universe[field] = action.payload.change[field];
         });
       }
     },
       // async actions
       extraReducers: {
-        [fetchWorlds.pending](state) {
+        [fetchUniverses.pending](state) {
           state.status = "loading";
         },
-        [fetchWorlds.fulfilled](state, action) {
-          state.currentWorld = action.payload;
+        [fetchUniverses.fulfilled](state, action) {
+          state.entities = action.payload;
           state.status = "idle";
         }
       }
   });
   
-  export const { worldAdded, worldUpdated } = worldsSlice.actions;
+  export const { universeAdded, universeUpdated } = universesSlice.actions;
   
-  export default worldsSlice.reducer;
+  export default universesSlice.reducer;

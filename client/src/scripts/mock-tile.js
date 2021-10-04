@@ -64,13 +64,13 @@ const mockShapes = [
         // shape_type_id: 1, return these as strings
         shape_class: "geo",
         shape_type: "sea",
-        path: "m 0 0 h 1024 v 1024 h -1024 v -1024"
+        path: "m 0 0 h 2048 v 2048 h -2048 v -2048"
     },
     {
         id: 2,
         shape_class: "geo",
         shape_type: "land",
-        path: "m 496 496 h 32 v 32 h -32 v -32"
+        path: "m 992 992 h 64 v 64 h -64 v -64"
     }
 ]
 

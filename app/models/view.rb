@@ -1,5 +1,6 @@
 class View < ApplicationRecord
   belongs_to :user
   belongs_to :tile
-  validates :title, presence: true, uniqueness: true
+  belongs_to :world
+  validates :title, presence: true, uniqueness: {scope: :world}
 end

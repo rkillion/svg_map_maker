@@ -1,19 +1,19 @@
-function Tile({ direction, shapes, centerImageMCoord, unitWidthAtZoom, mapSettings}) {
+function Tile({ direction, shapes, centerImageMCoord, tileWidthAtZoom, mapSettings}) {
     const coordinateOffsets = {
         northeast: {
-            x: -unitWidthAtZoom,
-            y: -unitWidthAtZoom
+            x: -tileWidthAtZoom,
+            y: -tileWidthAtZoom
         },
         north: {
             x: 0,
-            y: -unitWidthAtZoom
+            y: -tileWidthAtZoom
         },
         northwest: {
-            x: unitWidthAtZoom,
-            y: -unitWidthAtZoom
+            x: tileWidthAtZoom,
+            y: -tileWidthAtZoom
         },
         west: {
-            x: -unitWidthAtZoom,
+            x: -tileWidthAtZoom,
             y: 0
         },
         center: {
@@ -21,20 +21,20 @@ function Tile({ direction, shapes, centerImageMCoord, unitWidthAtZoom, mapSettin
             y: 0
         },
         east: {
-            x: unitWidthAtZoom,
+            x: tileWidthAtZoom,
             y: 0
         },
         southwest: {
-            x: -unitWidthAtZoom,
-            y: unitWidthAtZoom
+            x: -tileWidthAtZoom,
+            y: tileWidthAtZoom
         },
         south: {
             x: 0,
-            y: unitWidthAtZoom
+            y: tileWidthAtZoom
         },
         southeast: {
-            x: unitWidthAtZoom,
-            y: unitWidthAtZoom
+            x: tileWidthAtZoom,
+            y: tileWidthAtZoom
         }
     }
 

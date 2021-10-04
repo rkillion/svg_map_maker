@@ -7,6 +7,7 @@ class Tile < ApplicationRecord
   has_many :relatives, through: :tile_relationships, source: :relative_id
   has_many :views, dependent: :destroy
   has_many :children, -> {where(relationship: "child")}, through: :tile_relationships, source: :relative_id, class_name: "Tile"
+  has_many :shapes, dependent: :destroy
 
   def settings
     world = self.world.settings
@@ -24,12 +25,28 @@ class Tile < ApplicationRecord
     }
   end
 
+  def make_default_view(title="Tile#{self.id}")
+    focus = self.settings[:tile_width_units]/2
+    View.create(
+      user_id: self.user.id,
+      tile_id: self.id,
+      world_id: self.world.id,
+      focus_x: focus,
+      focus_y: focus,
+      title: title
+    )
+  end
+
   def parent
-    self.tile_relationships.where(relationship: "parent")
+    relationship = self.tile_relationships.where(relationship: "parent")
+    Tile.find_by(id: relationship.relative_id)
   end
 
   def border(direction)
-    self.tile_relationships.find_by(relationship: direction)
+    relationship = self.tile_relationships.find_by(relationship: direction)
+    if relationship
+      Tile.find_by(id: relationship.relative_id)
+    end
   end
 
   def east

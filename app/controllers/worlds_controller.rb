@@ -11,7 +11,7 @@ class WorldsController < ApplicationController
 
   # GET /worlds/1
   def show
-    render json: @world
+    render json: @world, serializer: WorldsShowSerializer
   end
 
   # POST /worlds

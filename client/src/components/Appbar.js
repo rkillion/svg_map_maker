@@ -19,8 +19,6 @@ export default function Appbar() {
   const user = useSelector((state)=>state.user.current)
   const dispatch = useDispatch()
 
-  console.log("User",user);
-
   const handleLogout = () => {
         fetch(`/logout`, {
           method: 'DELETE'

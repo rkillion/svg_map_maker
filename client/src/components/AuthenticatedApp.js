@@ -36,7 +36,7 @@ function AuthenticatedApp() {
 
     return (
         <main>
-            <Appbar />
+            {/* <Appbar /> */}
             <Switch>
                 <Route path="/viewer">
                     <Viewport />

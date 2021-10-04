@@ -4,15 +4,18 @@ class GridsController < ApplicationController
 
     def show
         render json: {
-            center: tile_hash(@tile),
-            northeast: tile_hash(@tile.northeast),
-            north: tile_hash(@tile.north),
-            northwest: tile_hash(@tile.northwest),
-            east: tile_hash(@tile.east),
-            west: tile_hash(@tile.west),
-            south: tile_hash(@tile.south),
-            southeast: tile_hash(@tile.southeast),
-            southwest: tile_hash(@tile.southwest)
+            settings: @tile.settings,
+            tiles: {
+                center: tile_hash(@tile),
+                northeast: tile_hash(@tile.northeast),
+                north: tile_hash(@tile.north),
+                northwest: tile_hash(@tile.northwest),
+                east: tile_hash(@tile.east),
+                west: tile_hash(@tile.west),
+                south: tile_hash(@tile.south),
+                southeast: tile_hash(@tile.southeast),
+                southwest: tile_hash(@tile.southwest)
+            }
         }
     end
 

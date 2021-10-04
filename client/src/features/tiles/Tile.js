@@ -1,19 +1,23 @@
-function Tile({ direction, shapes, centerImageMCoord, tileWidthAtZoom, mapSettings}) {
+import { useSelector } from 'react-redux';
+
+
+function Tile({ direction, tile, centerImageMCoord, handleMouseDown, handleMouseUp, handleMouseMove}) {
+    const tileSettings = useSelector(state=>state.grids.primary.settings)
     const coordinateOffsets = {
         northeast: {
-            x: -tileWidthAtZoom,
-            y: -tileWidthAtZoom
+            x: -tileSettings.tile_width_units,
+            y: -tileSettings.tile_width_units
         },
         north: {
             x: 0,
-            y: -tileWidthAtZoom
+            y: -tileSettings.tile_width_units
         },
         northwest: {
-            x: tileWidthAtZoom,
-            y: -tileWidthAtZoom
+            x: tileSettings.tile_width_units,
+            y: -tileSettings.tile_width_units
         },
         west: {
-            x: -tileWidthAtZoom,
+            x: -tileSettings.tile_width_units,
             y: 0
         },
         center: {
@@ -21,29 +25,45 @@ function Tile({ direction, shapes, centerImageMCoord, tileWidthAtZoom, mapSettin
             y: 0
         },
         east: {
-            x: tileWidthAtZoom,
+            x: tileSettings.tile_width_units,
             y: 0
         },
         southwest: {
-            x: -tileWidthAtZoom,
-            y: tileWidthAtZoom
+            x: -tileSettings.tile_width_units,
+            y: tileSettings.tile_width_units
         },
         south: {
             x: 0,
-            y: tileWidthAtZoom
+            y: tileSettings.tile_width_units
         },
         southeast: {
-            x: tileWidthAtZoom,
-            y: tileWidthAtZoom
+            x: tileSettings.tile_width_units,
+            y: tileSettings.tile_width_units
         }
+    }
+    const shapeTypes = useSelector(state => state.shapeTypes.entities)
+
+    if (!tile) {
+        return null
+    }
+
+    function parsePath(shape) {
+        return `M ${centerImageMCoord.x+coordinateOffsets[direction].x} ${centerImageMCoord.y+coordinateOffsets[direction].y} ${shape.path_zero} ${shape.path_one} ${shape.path_two} ${shape.path_three}`
+    }
+
+    function getColor(shape) {
+        return shapeTypes.find(shapeClass=>shapeClass.id===shape.shape_class).shape_types.find(type=>type.id===shape.shape_type).color
     }
 
     return (
         <g>
-            {shapes.map(shape=><path
+            {tile.shapes.map(shape=><path
                 key={shape.id} 
-                d={`M ${centerImageMCoord.x+coordinateOffsets[direction].x} ${centerImageMCoord.y+coordinateOffsets[direction].y} ${shape.path}`}
-                fill={mapSettings[shape.shape_class][shape.shape_type]}
+                d={parsePath(shape)}
+                fill={getColor(shape)}
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
+                onMouseMove={handleMouseMove}
             />)}
         </g>
     )

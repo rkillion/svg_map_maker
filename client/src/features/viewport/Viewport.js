@@ -1,34 +1,33 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { mockGrid, mockSettings } from '../../scripts/mock-tile';
 import Tile from '../tiles/Tile';
-
-//the viewport has two measurements to its dimensions: units and pixels. The width in pixels is used to determine its visual width on the page. Its unit-width is the number of units across. These units are used to determine where and how big svg elements are drawn. For example, if the viewPortWidth width is 8px and the unit width is 4, that means that the units are each 2px across. At the smallest level, the number of units across is 64 (a somewhat arbitrary choice- it looked good enough and needed to be divisible by 4). The number of units is capped at 2048 (or 64*(2**5)), which is the size at the fifth level out of zoom from zero (width and height of units are doubled at each zoom). Again this was a choice just based on how it looked. the units were nearly invisible after that level because they were too small so I figured that would be good enough for most screens.
+import { useDispatch, useSelector } from 'react-redux';
+import { changeFocus, changeUserFocus } from './viewSlice';
 
 const viewPortWidth = 2000 //in pixels, height is half of this
-const bvpuWidth = 64 //this is the Base ViewPort Unit Width, used to set the number of units wide the viewport is at zero level, height is half
 
 function Viewport() {
+  const dispatch = useDispatch()
   const [dimensions, setDimensions] = useState({ //the dimensions of the user's window
     height: Math.min(window.innerHeight,viewPortWidth/2),
     width: Math.min(window.innerWidth,viewPortWidth)
   })
-  const [mapSettings,setMapSettings] = useState(mockSettings);
-  const [zoomLevel,setzoomLevel] = useState(5) //the zoom level, used to get svg elements and translate/build them to the correct scale
-  const unitWidthAtZoom = bvpuWidth*2*(2**Math.min(5,zoomLevel)); //the number of units wide that the viewport should be at the current zoom level, 5 is the max
-  const windowCenterUnit = { //the x,y coordinates in units that are at the center of the users window
-    x: dimensions.width*.5*unitWidthAtZoom/viewPortWidth,
-    y: dimensions.height*.5*unitWidthAtZoom/viewPortWidth
-  }
-  const [focalPoint,setFocalPoint] = useState({ //the x,y coordinates (in units) of the zero positioned image that should appear in the center of the user's window
-      x: unitWidthAtZoom/4, //default start point is 
-      y: unitWidthAtZoom/4
-  })
-  const centerImageMCoord = {
-      x: windowCenterUnit.x - focalPoint.x,
-      y: windowCenterUnit.y - focalPoint.y
-  }
-  const [tileGrid,setTiles] = useState(mockGrid)
+  const [dragPoint,setDragPoint] = useState({});
+  const tileSettings = useSelector(state=>state.grids.primary.settings)
+  const tiles = useSelector(state=>state.grids.primary.tiles)
+  const tileFocus = useSelector(state => state.view.tileFocus)
+  const userFocus = useSelector(state => state.view.userFocus)
+  
+  const windowCenterUnit = tileSettings ? { //the x,y coordinates in units that are at the center of the users window
+    x: dimensions.width*tileSettings.tile_width_units/viewPortWidth,
+    y: dimensions.height*tileSettings.tile_width_units/viewPortWidth
+  } : null
+
+  const centerImageMCoord = tileSettings ? {
+      x: windowCenterUnit.x - userFocus.x,
+      y: windowCenterUnit.y - userFocus.y
+  } : null
+
   const tileIds = {
     northwest: 1,
     north: 2,
@@ -40,9 +39,6 @@ function Viewport() {
     south: 8,
     southeast: 9
   }
-  //get tiles will fetch the tiles, also it will set the zoom level based off the tiles
-
-console.log("UnitWidth:",unitWidthAtZoom)  
 
   function debounce(fn, ms) { //a function for clearing and applying a timer- used to reset the variable in state for the window size
     let timer
@@ -70,38 +66,65 @@ console.log("UnitWidth:",unitWidthAtZoom)
     }
   })
 
-  //temporary formulas for testing
-  const fillSquare = "h 1 v 1 h -1 v -1";
-  const moveRight = "m 1 0"
-  const nextRow = `m -${unitWidthAtZoom/2} 1`
-  function generateUnitSVGCode(square=false) {
-    let returnString = "";
-    for (let h=1;h<=unitWidthAtZoom/2;h++) {
-        for (let w=1;w<=unitWidthAtZoom/2;w++) {
-            if (square) {
-                returnString = (h===unitWidthAtZoom/4||h===(unitWidthAtZoom/4)+1)&&(w===unitWidthAtZoom/4||w===(unitWidthAtZoom/4)+1) ? returnString+` ${fillSquare}` : returnString;
-            }
-            returnString+=` ${moveRight}`
-        }
-        returnString = h===unitWidthAtZoom/2 ? returnString : returnString+` ${nextRow}`;
+  function handleMouseDown(e) {
+    setDragPoint({
+      x: e.clientX,
+      y: e.clientY
+    })
+  }
+
+  
+
+  function handleMouseMove(e) {
+    if(dragPoint.x) {
+      let initialFocus = tileFocus;
+      let initialDragPoint = dragPoint
+      // let moveTimer;
+      // clearTimeout(moveTimer);
+      // let newFocus;
+      // moveTimer = setTimeout(() => {
+      //   moveTimer = null;
+      //   newFocus = {
+      //       x: initialFocus.x+dragPoint.x-e.clientX,
+      //       y: initialFocus.y+dragPoint.y-e.clientY
+      //   }
+      //   dispatch(changeFocus(newFocus))
+      // }, 0)
+      let newFocus = {
+          x: initialFocus.x+((dragPoint.x-e.clientX)*2*tileSettings.tile_width_units/viewPortWidth),
+          y: initialFocus.y+((dragPoint.y-e.clientY)*2*tileSettings.tile_width_units/viewPortWidth)
+      }
+      dispatch(changeUserFocus(newFocus))
+      // setUserFocus(newFocus)
+      // dispatch(changeFocus(newFocus))
+      // setDragPoint({
+      //   x: initialDragPoint.x-e.clientX,
+      //   y: initialDragPoint.y-e.clientY
+      // });
     }
-    return returnString;
+  }
+
+  function handleMouseUp(e) {
+    setDragPoint({})
+    console.log("Start focus:",tileFocus,"End focus:",userFocus);
+    dispatch(changeFocus(userFocus))
+  }
+
+if (!tileSettings){
+  return null
 }
 
-console.log();
-
 return (
-    <SVGCanvas viewBox={`0 0 ${unitWidthAtZoom} ${unitWidthAtZoom/2}`} xmlns="http://www.w3.org/2000/svg">
-        {tileGrid.center&&Object.keys(tileGrid).map((direction)=><Tile 
+    <SVGCanvas viewBox={`0 0 ${tileSettings.tile_width_units*2} ${tileSettings.tile_width_units}`} xmlns="http://www.w3.org/2000/svg">
+        {tiles&&Object.keys(tiles).map((direction)=><Tile 
             key={tileIds[direction]}
             direction={direction}
-            shapes={mockGrid[direction].shapes}
+            tile = {tiles[direction]}
             centerImageMCoord={centerImageMCoord}
-            tileWidthAtZoom={unitWidthAtZoom/2}
-            mapSettings={mapSettings}
+            handleMouseDown={handleMouseDown}
+            handleMouseUp={handleMouseUp}
+            handleMouseMove={handleMouseMove}
         />)}
-        {/* <path d={`M ${centerImageMCoord.x} ${centerImageMCoord.y} h 1024 v 1024 h -1024 v -1024`} fill="lightblue"/>
-        <path d={`M ${centerImageMCoord.x} ${centerImageMCoord.y} ${generateUnitSVGCode(true)}`} onClick={e=>{console.log(e)}} fill="green"/> */}
     </SVGCanvas>
 )
 }

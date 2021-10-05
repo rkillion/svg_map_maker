@@ -16,12 +16,13 @@ class UniversesController < ApplicationController
 
   # POST /universes
   def create
-    @universe = Universe.new(universe_params)
-    current_user.universes << @universe unless !@universe.valid?
-    if @universe.save
-      render json: @universe, status: :created, location: @universe
+    byebug
+    universe = Universe.new(universe_params)
+    current_user.universes << universe
+    if universe.save
+      render json: universe, status: :created
     else
-      render json: @universe.errors, status: :unprocessable_entity
+      render json: universe.errors, status: :unprocessable_entity
     end
   end
 

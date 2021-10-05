@@ -117,6 +117,16 @@ class Tile < ApplicationRecord
     end
   end
 
+  def seed
+    sea_shape = Shape.create(
+      tile_id: self.id,
+      shape_type_id: ShapeType.find_by(title: "Sea").id,
+      shape_class_id: ShapeClass.find_by(title: "Geographical").id,
+      user_id: self.user.id
+    )
+    sea_shape.set_paths
+  end
+
   private
 
   def opposite_of

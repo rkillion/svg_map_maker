@@ -7,6 +7,19 @@ export const fetchUniverses = createAsyncThunk("universes/fetchUniverses", () =>
       .then((data) => data);
   });
 
+export const postUniverse = createAsyncThunk("universes/postUniverse", (postConfig) => {
+  // return a Promise containing the data we want
+  return fetch("/universes",{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(postConfig)
+  })
+    .then((response) => response.json())
+    .then((data) => data);
+});
+
 const initialState = {
     entities: [], // array of universes belonging to the user
     status: "idle", // loading state
@@ -36,6 +49,13 @@ const universesSlice = createSlice({
         },
         [fetchUniverses.fulfilled](state, action) {
           state.entities = action.payload;
+          state.status = "idle";
+        },
+        [postUniverse.pending](state) {
+          state.status = "loading";
+        },
+        [postUniverse.fulfilled](state, action) {
+          state.entities.push(action.payload);
           state.status = "idle";
         }
       }

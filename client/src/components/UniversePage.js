@@ -72,7 +72,14 @@ export default function UniversePage () {
                 formDialogueOpen={formDialogueOpen}
                 setFormDialogueOpen={setFormDialogueOpen}
                 formDialogueObject={{
-                    item: "world"
+                    item: "world",
+                    field: "title",
+                    postConfig: {
+                        title: "",
+                        universe_id: universe.id,
+                        max_zoom_level: 21
+                    },
+                    action: "postWorld"
                 }}
             />
         </DisplayBox>

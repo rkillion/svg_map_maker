@@ -1,7 +1,7 @@
 import Appbar from './Appbar';
 import Viewport from '../features/viewport/Viewport';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { fetchUniverses } from '../features/universes/universesSlice';
 import { useState, useEffect } from 'react';
 import { fetchWorlds } from '../features/worlds/worldsSlice';
@@ -31,18 +31,11 @@ function AuthenticatedApp() {
 
       const [universeDialogueOpen, setUniverseDialogueOpen] = useState(false);
 
-    const handleUniverseFormOpen = () => {
-        setUniverseDialogueOpen(true);
-    };
-
     const dispatch = useDispatch()
+    const currentWorld = useSelector(state=>state.worlds.currentWorld)
 
-    useEffect(() => {
-        dispatch(fetchShapeTypes())
-        .then(()=>{
-            dispatch(fetchUniverses())
-        .then(data=>{
-            dispatch(fetchWorlds(data.payload[0].worlds[0].id))
+    function loadWorld(id) {
+        dispatch(fetchWorlds(id))
             .then(data=>{
                 dispatch(changeView(data.payload.views[0]));
                 dispatch(changeFocus({
@@ -56,6 +49,15 @@ function AuthenticatedApp() {
                 dispatch(fetchGrids(data.payload.views[0].tile_id))
                 // .then(console.log)
             })
+    }
+
+    useEffect(() => {
+        dispatch(fetchShapeTypes())
+        .then(()=>{
+            dispatch(fetchUniverses())
+        .then(data=>{
+            let worldIdToGet = currentWorld.title ? currentWorld.id : data.payload[0].worlds[0].id; 
+            loadWorld(worldIdToGet);
         })})
     }, [dispatch])
 
@@ -68,6 +70,7 @@ function AuthenticatedApp() {
                 toggleDrawer={toggleDrawer}
                 sidebarState={sidebarState}
                 setUniverseDialogueOpen={setUniverseDialogueOpen}
+                loadWorld={loadWorld}
             />
             <Switch>
                 <Route path="/viewer">
@@ -82,7 +85,12 @@ function AuthenticatedApp() {
                 formDialogueOpen={universeDialogueOpen}
                 setFormDialogueOpen={setUniverseDialogueOpen}
                 formDialogueObject={{
-                    item: "universe"
+                    item: "universe",
+                    field: "title",
+                    postConfig: {
+                        title: ""
+                    },
+                    action: "postUniverse"
                 }}
             />
         </main>

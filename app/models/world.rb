@@ -1,5 +1,6 @@
 class World < ApplicationRecord
   belongs_to :universe
+  belongs_to :user
   validates :title, presence: true, uniqueness: {scope: :universe, message: "already exists in this universe"}
   validates :max_zoom_level, presence: true, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 21}
   has_many :tiles, dependent: :destroy
@@ -20,4 +21,21 @@ class World < ApplicationRecord
     }
   end
 
+  def seed
+    tile_one = Tile.create(
+      world_id: self.id,
+      zoom_level: self.max_zoom_level,
+      user_id: self.user.id,
+    )
+    tile_two = Tile.create(
+      world_id: self.id,
+      zoom_level: self.max_zoom_level,
+      user_id: self.user.id,
+    )
+    tile_one.make_default_view
+    tile_one.set_relationship(tile_two,"east")
+    tile_one.set_relationship(tile_two,"west")
+    tile_one.seed
+    tile_two.seed
+  end
 end

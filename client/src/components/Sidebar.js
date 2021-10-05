@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
 import PublicIcon from '@mui/icons-material/Public';
 import { useHistory } from 'react-router';
 
-export default function TemporaryDrawer({ toggleDrawer, sidebarState, setUniverseDialogueOpen }) {
+export default function TemporaryDrawer({ toggleDrawer, sidebarState, setUniverseDialogueOpen, loadWorld }) {
     const universes = useSelector(state=>state.universes.entities)
     const history = useHistory()
 
@@ -39,12 +39,11 @@ export default function TemporaryDrawer({ toggleDrawer, sidebarState, setUnivers
       </List>
       {universes.map(universe=>{
           return ( <>
-          <List>
+          <List key={universe.id}>
               <ListItem button 
-                key={universe.id}
                 onClick={()=>history.push(`/universes/${universe.id}`)}
               >
-                <ListItemIcon>
+                <ListItemIcon >
                     <AllInclusiveIcon />
                 </ListItemIcon>
                 <ListItemText primary={universe.title} />
@@ -52,16 +51,19 @@ export default function TemporaryDrawer({ toggleDrawer, sidebarState, setUnivers
               {universe.worlds.map(world=>(
                 <ListItem button 
                     key={world.id}
-                    onClick={()=>history.push(`/viewer`)}
+                    onClick={()=>{
+                      loadWorld(world.id);
+                      history.push(`/viewer`);
+                    }}
                 >
-                  <ListItemIcon>
+                  <ListItemIcon >
                       <PublicIcon />
                   </ListItemIcon>
                   <ListItemText primary={world.title} />
                 </ListItem>
               ))}
           </List>
-          <Divider />
+          <Divider key={`divider${universe.id}`}/>
           </>
       )
       })      

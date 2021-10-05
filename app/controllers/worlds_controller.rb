@@ -16,12 +16,13 @@ class WorldsController < ApplicationController
 
   # POST /worlds
   def create
-    @world = World.new(world_params)
-    current_user.worlds << @world unless !@world.valid?
-    if @world.save
-      render json: @world, status: :created, location: @world
+    world = World.new(world_params)
+    current_user.worlds << world
+    if world.save
+      world.seed
+      render json: world, status: :created
     else
-      render json: @world.errors, status: :unprocessable_entity
+      render json: world.errors, status: :unprocessable_entity
     end
   end
 

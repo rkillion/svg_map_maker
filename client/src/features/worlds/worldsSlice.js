@@ -7,6 +7,19 @@ export const fetchWorlds = createAsyncThunk("worlds/fetchWorlds", (id) => {
       .then((data) => data);
   });
 
+  export const postWorld = createAsyncThunk("worlds/postWorld", (postConfig) => {
+    // return a Promise containing the data we want
+    return fetch("/worlds",{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(postConfig)
+    })
+      .then((response) => response.json())
+      .then((data) => data);
+  });
+
 const initialState = {
     entities: [], // array of worlds belonging to the user
     currentWorld: {},
@@ -36,6 +49,13 @@ const worldsSlice = createSlice({
           state.status = "loading";
         },
         [fetchWorlds.fulfilled](state, action) {
+          state.currentWorld = action.payload;
+          state.status = "idle";
+        },
+        [postWorld.pending](state) {
+          state.status = "loading";
+        },
+        [postWorld.fulfilled](state, action) {
           state.currentWorld = action.payload;
           state.status = "idle";
         }

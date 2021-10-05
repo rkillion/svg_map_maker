@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import Tile from '../tiles/Tile';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeFocus, changeUserFocus } from './viewSlice';
+import { changeView, changeFocus, changeUserFocus } from './viewSlice';
+import { fetchGrids } from '../tiles/gridsSlice';
 
-const viewPortWidth = 1200 //in pixels, height is half of this
+const viewPortWidth = 2000 //in pixels, height is half of this
 
 function Viewport() {
   const dispatch = useDispatch()
@@ -29,11 +30,11 @@ function Viewport() {
       y: windowCenterUnit.y - userFocus.y
   } : null
 
-  const centerImageEdgeDistancesUnits = tileSettings ? {
-    s: -currentView.focus_y,
-    n: tileSettings.tile_width_units-currentView.focus_y,
-    e: -currentView.focus_x,
-    w: tileSettings.tile_width_units-currentView.focus_x,
+const centerImageEdgeDistancesUnits = tileSettings ? {
+  s: -tileSettings.tile_width_units+currentView.focus_y,
+  n: currentView.focus_y,
+  e: -tileSettings.tile_width_units+currentView.focus_x,
+  w: currentView.focus_x,
 } : null
 
   const tileIds = {
@@ -117,8 +118,37 @@ function Viewport() {
       newCoordinates.x = (displacement.x*-1)-(tileSettings.tile_width_units-currentView.focus_x)
       newCoordinates.y = currentView.focus_y-displacement.y
     }
-    console.log("New Tile:",newTile,"New Coordinates:",newCoordinates)
+    if (newTile) {
+      let tile_to_get = tiles[newTile].id
+      dispatch(fetchGrids(tile_to_get))
+      .then(()=>{
+        dispatch(changeView({
+          focus_x: newCoordinates.x,
+          focus_y: newCoordinates.y
+        }));
+        dispatch(changeFocus({
+            x: newCoordinates.x,
+            y: newCoordinates.y
+        }));
+        dispatch(changeUserFocus({
+            x: newCoordinates.x,
+            y: newCoordinates.y
+        }))
+      })
+    }
   }
+
+//   console.log("Viewport:",{
+//     dragPoint: dragPoint,
+//     tileSettings: tileSettings,
+//     tiles: tiles,
+//     currentView: currentView,
+//     tileFocus: tileFocus,
+//     userFocus: userFocus,
+//     windowCenterUnit: windowCenterUnit,
+//     centerImageMCoord: centerImageMCoord,
+//     centerImageEdgeDistancesUnits: centerImageEdgeDistancesUnits
+// })
 
   function checkMaxHeight(newFocus) {
     let extraTileNorth = tiles.north ? tileSettings.tile_width_units : 0;
@@ -158,8 +188,6 @@ function Viewport() {
 
   function handleMouseUp(e) {
     setDragPoint({})
-    console.log("Displacement x:",currentView.focus_x-userFocus.x,"Displacement y:",currentView.focus_y-userFocus.y)
-    // console.log("Edge",centerImageEdgeDistancesUnits)
     dispatch(changeFocus(userFocus));
     manageReload()
   }

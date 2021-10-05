@@ -27,7 +27,7 @@ function AuthenticatedApp() {
                 dispatch(changeUserFocus({
                     x: data.payload.views[0].focus_x,
                     y: data.payload.views[0].focus_y,
-                }))
+                }));
                 dispatch(fetchGrids(data.payload.views[0].tile_id))
                 // .then(console.log)
             })
@@ -36,7 +36,7 @@ function AuthenticatedApp() {
 
     return (
         <main>
-            {/* <Appbar /> */}
+            <Appbar />
             <Switch>
                 <Route path="/viewer">
                     <Viewport />

@@ -14,7 +14,7 @@ import Menu from '@mui/material/Menu';
 import { useDispatch, useSelector } from 'react-redux'
 import { userUpdate } from '../features/auth/userSlice';
 
-export default function Appbar() {
+export default function Appbar({ toggleDrawer }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const user = useSelector((state)=>state.user.current)
   const dispatch = useDispatch()
@@ -60,6 +60,7 @@ export default function Appbar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={toggleDrawer("left", true)}
           >
             <MenuIcon />
           </IconButton>

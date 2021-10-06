@@ -12,6 +12,7 @@ import Sidebar from './Sidebar'
 import * as React from 'react';
 import UniversePage from './UniversePage';
 import FormDialog from './FormDialog';
+import InfoBar from './InfoBar';
 
 function AuthenticatedApp() {
     const [sidebarState, setSidebarState] = React.useState({
@@ -75,6 +76,7 @@ function AuthenticatedApp() {
             <Switch>
                 <Route path="/viewer">
                     <Viewport />
+                    <InfoBar />
                 </Route>
                 <Route path="/universes/:id">
                     <UniversePage />

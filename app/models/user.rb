@@ -6,4 +6,5 @@ class User < ApplicationRecord
     has_many :tiles
     has_many :shapes
     has_many :views
+    has_many :features, dependent: :destroy
 end

@@ -45,7 +45,8 @@ class GridsController < ApplicationController
             path_zero: shape.path_zero,
             path_one: shape.path_one,
             path_two: shape.path_two,
-            path_three: shape.path_three
+            path_three: shape.path_three,
+            feature: shape.feature
         }}
     end
 end

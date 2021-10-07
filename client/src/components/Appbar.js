@@ -94,8 +94,6 @@ export default function Appbar({ toggleDrawer }) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={handleLogout} style={{color: "red"}}>Logout</MenuItem>
               </Menu>
             </div>

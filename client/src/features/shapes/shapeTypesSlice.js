@@ -20,14 +20,11 @@ const shapeTypesSlice = createSlice({
         const shapeClass = state.entities.find(shapeClass=>shapeClass.id===action.payload)
         shapeClass.open = !shapeClass.open
       },
-      shapeTypeUpdate(state,action) {
-        //configure changes like this {id: 1,shape_class: 1,changes: {key1:value1, key2:value2...}}
+      shapeTypeToggle(state,action) {
+        //configure changes like this {id: 1,shape_class: 1}
         const shapeClass = state.entities.find(shapeClass=>shapeClass.id===action.payload.shape_class)
         const shapeType = shapeClass.shape_types.find(type=>type.id===action.payload.id)
-        let fields = Object.keys(action.payload.changes)
-        fields.forEach(field => {
-            shapeType[field] = action.payload.change[field];
-        });
+        shapeType.open = !shapeType.open
       },
     },
       // async actions
@@ -46,6 +43,6 @@ const shapeTypesSlice = createSlice({
       }
   });
 
-  export const { shapeClassToggle, shapeTypeUpdate } = shapeTypesSlice.actions;
+  export const { shapeClassToggle, shapeTypeToggle } = shapeTypesSlice.actions;
   
   export default shapeTypesSlice.reducer;

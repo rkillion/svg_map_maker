@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :features
   resources :views
   resources :shapes
   resources :tile_relationships

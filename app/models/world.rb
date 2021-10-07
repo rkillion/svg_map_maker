@@ -5,6 +5,7 @@ class World < ApplicationRecord
   validates :max_zoom_level, presence: true, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 21}
   has_many :tiles, dependent: :destroy
   has_many :views, dependent: :destroy
+  has_many :features, dependent: :destroy
 
   def settings
     #viewport = the size of the viewport

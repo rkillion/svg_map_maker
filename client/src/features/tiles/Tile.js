@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { joinPath } from '../shapes/pathFunctions';
 
 
 function Tile({ direction, tile, centerImageMCoord, handleMouseDown, handleMouseUp, handleMouseMove}) {
@@ -48,7 +49,13 @@ function Tile({ direction, tile, centerImageMCoord, handleMouseDown, handleMouse
     }
 
     function parsePath(shape) {
-        return `M ${centerImageMCoord.x+coordinateOffsets[direction].x} ${centerImageMCoord.y+coordinateOffsets[direction].y} ${shape.path_zero} ${shape.path_one} ${shape.path_two} ${shape.path_three}`
+        let shapePath;
+        if (shape.pathArray) {
+            shapePath = joinPath(shape.pathArray,tileSettings.tile_width_units)
+        } else {
+            shapePath = `${shape.path_zero} ${shape.path_one} ${shape.path_two} ${shape.path_three}`
+        }
+        return `M ${centerImageMCoord.x+coordinateOffsets[direction].x} ${centerImageMCoord.y+coordinateOffsets[direction].y} ${shapePath}`
     }
 
     function getColor(shape) {
@@ -58,7 +65,7 @@ function Tile({ direction, tile, centerImageMCoord, handleMouseDown, handleMouse
     return (
         <g>
             {tile.shapes.map(shape=><path
-                key={shape.id} 
+                key={shape.id ? shape.id : shape.feature.title} 
                 d={parsePath(shape)}
                 fill={getColor(shape)}
                 onMouseDown={handleMouseDown}

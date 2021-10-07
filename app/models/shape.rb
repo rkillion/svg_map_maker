@@ -3,6 +3,7 @@ class Shape < ApplicationRecord
   belongs_to :shape_class
   belongs_to :shape_type
   belongs_to :user
+  belongs_to :feature
 
   #you can create a formula that will generate a full path at a specified point by providing a quadrant path i.e. 0112
 

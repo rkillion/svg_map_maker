@@ -36,11 +36,15 @@ const worldsSlice = createSlice({
       },
       worldUpdated(state, action) {
         //configure changes like this {id: 1,changes: {key1:value1, key2:value2...}}
-        const world = state.entities.find((world) => world.id === action.payload.id);
-        let fields = Object.keys(action.payload.changes)
-        fields.forEach(field => {
-            world[field] = action.payload.change[field];
-        });
+        const world = state.currentWorld;
+        // let fields = Object.keys(action.payload.changes)
+        // fields.forEach(field => {
+        //     world[field] = action.payload.change[field];
+        // });
+        console.log(world);
+      },
+      addFeatureToWorld(state,action) {
+        state.currentWorld.features.push(action.payload)
       }
     },
       // async actions
@@ -62,6 +66,6 @@ const worldsSlice = createSlice({
       }
   });
   
-  export const { worldAdded, worldUpdated } = worldsSlice.actions;
+  export const { worldAdded, worldUpdated, addFeatureToWorld } = worldsSlice.actions;
   
   export default worldsSlice.reducer;

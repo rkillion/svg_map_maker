@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import Tile from '../tiles/Tile';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeView, changeFocus, changeUserFocus } from './viewSlice';
-import { fetchGrids } from '../tiles/gridsSlice';
+import { addShape, changeShapeArray, fetchGrids } from '../tiles/gridsSlice';
+import { changePath, generatePathArray } from '../shapes/pathFunctions';
 
 const viewPortWidth = 2000 //in pixels, height is half of this
 
@@ -19,6 +20,8 @@ function Viewport() {
   const currentView = useSelector(state=>state.view.current)
   const tileFocus = useSelector(state => state.view.tileFocus)
   const userFocus = useSelector(state => state.view.userFocus)
+  const editingMode = useSelector(state=>state.grids.editingMode)
+  const features = useSelector(state=>state.worlds.currentWorld.features)
   
   const windowCenterUnit = tileSettings ? { //the x,y coordinates in units that are at the center of the users window
     x: dimensions.width*tileSettings.tile_width_units/viewPortWidth,
@@ -138,17 +141,19 @@ const centerImageEdgeDistancesUnits = tileSettings ? {
     }
   }
 
-//   console.log("Viewport:",{
-//     dragPoint: dragPoint,
-//     tileSettings: tileSettings,
-//     tiles: tiles,
-//     currentView: currentView,
-//     tileFocus: tileFocus,
-//     userFocus: userFocus,
-//     windowCenterUnit: windowCenterUnit,
-//     centerImageMCoord: centerImageMCoord,
-//     centerImageEdgeDistancesUnits: centerImageEdgeDistancesUnits
-// })
+  const viewportData = {
+    dragPoint: dragPoint,
+    tileSettings: tileSettings,
+    tiles: tiles,
+    currentView: currentView,
+    tileFocus: tileFocus,
+    userFocus: userFocus,
+    windowCenterUnit: windowCenterUnit,
+    centerImageMCoord: centerImageMCoord,
+    centerImageEdgeDistancesUnits: centerImageEdgeDistancesUnits,
+    viewPortWidth: viewPortWidth,
+    dimensions: dimensions
+}
 
   function checkMaxHeight(newFocus) {
     let extraTileNorth = tiles.north ? tileSettings.tile_width_units : 0;
@@ -174,7 +179,7 @@ const centerImageEdgeDistancesUnits = tileSettings ? {
   }
 
   function handleMouseMove(e) {
-    if(dragPoint.x) {
+    if(dragPoint.x&&!editingMode.mode) {
       let initialFocus = tileFocus;
       let newFocus = {
           x: initialFocus.x+((dragPoint.x-e.clientX)*2*tileSettings.tile_width_units/viewPortWidth),
@@ -186,10 +191,36 @@ const centerImageEdgeDistancesUnits = tileSettings ? {
     }
   }
 
-  function handleMouseUp(e) {
+  console.log(tiles);
+
+  function handleMouseUp(e,direction) { 
     setDragPoint({})
-    dispatch(changeFocus(userFocus));
-    manageReload()
+    if(tileFocus.x===userFocus.x&&tileFocus.y===userFocus.y) {
+      if(editingMode.mode) {
+        let feature = features.find(feature=>feature.title===editingMode.featureTitle)
+        console.log(feature)
+        let route = changePath(viewportData,e,direction,tiles[direction]);
+        console.log(route);
+        let shape = tiles[direction].shapes.find(shape=>shape.feature.title===editingMode.featureTitle)
+        if(!shape) {
+          dispatch(addShape({direction: direction,shape: {
+            shape_class: feature.shape_class_id,
+            shape_type: feature.shape_type_id,
+            feature: feature,
+            pathArray: generatePathArray([],route,tileSettings.tile_width_units,true) 
+          }}));
+        } else {
+          dispatch(changeShapeArray({
+            direction: direction,
+            feature: editingMode.featureTitle,
+            pathArray: generatePathArray(shape.pathArray,route,tileSettings.tile_width_units,true)
+          }))
+        }
+      }
+    } else {
+      dispatch(changeFocus(userFocus));
+      manageReload()
+    }
   }
 
 if (!tileSettings){
@@ -204,8 +235,9 @@ return (
             tile = {tiles[direction]}
             centerImageMCoord={centerImageMCoord}
             handleMouseDown={handleMouseDown}
-            handleMouseUp={handleMouseUp}
+            handleMouseUp={e=>{handleMouseUp(e,direction)}}
             handleMouseMove={handleMouseMove}
+            onClick={console.log}
         />)}
     </SVGCanvas>
 )

@@ -202,18 +202,19 @@ const centerImageEdgeDistancesUnits = tileSettings ? {
         let route = changePath(viewportData,e,direction,tiles[direction]);
         console.log(route);
         let shape = tiles[direction].shapes.find(shape=>shape.feature.title===editingMode.featureTitle)
+        let fill = editingMode.mode==="draw";
         if(!shape) {
           dispatch(addShape({direction: direction,shape: {
             shape_class: feature.shape_class_id,
             shape_type: feature.shape_type_id,
             feature: feature,
-            pathArray: generatePathArray([],route,tileSettings.tile_width_units,true) 
+            pathArray: generatePathArray([],route,tileSettings.tile_width_units,fill) 
           }}));
         } else {
           dispatch(changeShapeArray({
             direction: direction,
             feature: editingMode.featureTitle,
-            pathArray: generatePathArray(shape.pathArray,route,tileSettings.tile_width_units,true)
+            pathArray: generatePathArray(shape.pathArray,route,tileSettings.tile_width_units,fill)
           }))
         }
       }

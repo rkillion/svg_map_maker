@@ -88,7 +88,7 @@ function AuthenticatedApp() {
                     <InfoBar />
                 </Route>
                 <Route path="/universes/:id">
-                    <UniversePage />
+                    <UniversePage loadWorld={loadWorld}/>
                 </Route>
                 <Redirect to="/viewer" />
             </Switch>

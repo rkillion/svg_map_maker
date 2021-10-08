@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 function Login() {
   const history = useHistory()
@@ -59,6 +60,7 @@ function Login() {
         elevation={3}
         sx={{padding: '10px'}}
         >
+          <Typography>SVG Fantasy Mapmaker</Typography>
       <FormControl onSubmit={handleSubmit}>
           <FormLabel 
             htmlFor="username"

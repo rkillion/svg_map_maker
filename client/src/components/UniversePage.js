@@ -15,7 +15,7 @@ import ListItemText from '@mui/material/ListItemText';
 import FormDialog from "./FormDialog";
 import { useState } from "react";
 
-export default function UniversePage () {
+export default function UniversePage ({ loadWorld }) {
     const { id } = useParams();
     const universes = useSelector(state=>state.universes.entities)
     const universe = universes.find(universe=>universe.id===parseInt(id))
@@ -63,6 +63,7 @@ export default function UniversePage () {
                     <WorldCard 
                         key={world.id}
                         world={world}
+                        loadWorld={loadWorld}
                     />
                 ))}
             </CardArea>

@@ -32,7 +32,10 @@ export default function FormDialog({ formDialogueOpen, setFormDialogueOpen, form
   const handleSubmit = () => {
     if (action==="postUniverse") {
       dispatch(postUniverse(formData))
-    .then(()=>setFormDialogueOpen(false));
+    .then(()=>{
+      setFormDialogueOpen(false);
+      window.location.reload();
+    });
     }
     if (action==="postWorld") {
       dispatch(postWorld(formData))

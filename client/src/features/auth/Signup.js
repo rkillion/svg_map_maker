@@ -9,6 +9,7 @@ import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import FormDialog from '../../components/FormDialog';
+import Typography from '@mui/material/Typography';
 
 function Signup({ setCurrentUser }) {
   const history = useHistory()
@@ -65,6 +66,7 @@ function Signup({ setCurrentUser }) {
         sx={{padding: '10px'}}
         >
       <FormControl onSubmit={handleSubmit}>
+      <Typography>SVG Fantasy Mapmaker</Typography>
           <FormLabel 
             htmlFor="username"
             sx={{margin: '10px'}}

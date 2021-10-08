@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useHistory } from 'react-router';
 
-export default function WorldCard({ world }) {
+export default function WorldCard({ world, loadWorld }) {
     const history = useHistory()
 
   return (
@@ -22,18 +22,20 @@ export default function WorldCard({ world }) {
         <Typography gutterBottom variant="h5" component="div">
           {world.title}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        {/* <Typography variant="body2" color="text.secondary">
           Description
-        </Typography>
+        </Typography> */}
       </CardContent>
       <CardActions>
         <Button 
             size="small"
-            onClick={()=>history.push("/viewer")}
+            onClick={()=>{
+              loadWorld(world.id);
+              history.push("/viewer")}}
         >
             View
         </Button>
-        <Button size="small">Edit Details</Button>
+        {/* <Button size="small">Edit Details</Button> */}
       </CardActions>
     </Card>
   );

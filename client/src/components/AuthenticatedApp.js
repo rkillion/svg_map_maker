@@ -1,6 +1,6 @@
 import Appbar from './Appbar';
 import Viewport from '../features/viewport/Viewport';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchUniverses } from '../features/universes/universesSlice';
 import { useState, useEffect } from 'react';
@@ -34,6 +34,7 @@ function AuthenticatedApp() {
 
     const dispatch = useDispatch()
     const currentWorld = useSelector(state=>state.worlds.currentWorld)
+    const history = useHistory()
 
     function loadWorld(id) {
         dispatch(fetchWorlds(id))
@@ -57,8 +58,16 @@ function AuthenticatedApp() {
         .then(()=>{
             dispatch(fetchUniverses())
         .then(data=>{
-            let worldIdToGet = currentWorld.title ? currentWorld.id : data.payload[0].worlds[0].id; 
-            loadWorld(worldIdToGet);
+            if (data.payload.length===0) {
+                setUniverseDialogueOpen(true);
+            } else {
+                if (data.payload[0].worlds.length===0) {
+                    history.push(`/universes/${data.payload[0].id}`)
+                } else {
+                    let worldIdToGet = currentWorld.title ? currentWorld.id : data.payload[0].worlds[0].id; 
+                    loadWorld(worldIdToGet);
+                }
+            }
         })})
     }, [dispatch])
 

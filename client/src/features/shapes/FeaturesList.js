@@ -24,6 +24,7 @@ import NewFeatureDialogue from './NewFeatureDialogue';
 import { useState } from 'react';
 import { changeEditingMode } from '../tiles/gridsSlice';
 import { Button } from '@mui/material';
+import NatureIcon from '@mui/icons-material/Nature';
 
 export default function FeaturesList() {
     const shapeTypes = useSelector(state=>state.shapeTypes.entities)
@@ -48,7 +49,7 @@ export default function FeaturesList() {
     };
 
   function ClassIcon({ classTitle }) {
-      if (classTitle === "Geographical") {
+      if (classTitle === "Geographical"||classTitle==="Mountain") {
           return (
             <ListItemIcon>
                 <LandscapeIcon style={{color: "purple"}}/>
@@ -71,6 +72,12 @@ export default function FeaturesList() {
         return (
           <ListItemIcon>
               <GrassIcon style={{color: "green"}}/>
+          </ListItemIcon>
+          )
+    } else if (classTitle === "Forest") {
+        return (
+          <ListItemIcon>
+              <NatureIcon style={{color: "darkgreen"}}/>
           </ListItemIcon>
           )
     } else {

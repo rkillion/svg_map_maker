@@ -2,6 +2,13 @@ import React, { useState } from 'react'
 import { useHistory, Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { userUpdate } from './userSlice'
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import FormLabel from '@mui/material/FormLabel';
+import FormControl from '@mui/material/FormControl';
+import Button from '@mui/material/Button';
+import FormDialog from '../../components/FormDialog';
 
 function Signup({ setCurrentUser }) {
   const history = useHistory()
@@ -27,7 +34,6 @@ function Signup({ setCurrentUser }) {
         if (res.ok) {
           res.json().then(user => {
             dispatch(userUpdate(user))
-            history.push('/viewer') //you will actually need to push to /newUniverse once you make it
           })
         } else {
           res.json().then(errors => {
@@ -38,51 +44,56 @@ function Signup({ setCurrentUser }) {
   }
   return (
     <div className="authForm">
-      <form onSubmit={handleSubmit}>
-        <h1>Sign Up</h1>
-        <p>
-          <label 
+      <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        padding: '10px',
+        width: 'auto',
+        margin: 'auto',
+        '& > :not(style)': {
+          m: 1,
+          // width: 128,
+          // height: 128,
+        },
+      }}
+      width="auto"
+    >
+      <Paper 
+        elevation={3}
+        sx={{padding: '10px'}}
+        >
+      <FormControl onSubmit={handleSubmit}>
+          <FormLabel 
             htmlFor="username"
+            sx={{margin: '10px'}}
           >
-            Username
-          </label>
-          <input
-            type="text"
-            name="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </p>
-        <p>
-          <label 
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            name=""
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </p>
-        <p>
-          <label 
-            htmlFor="password_confirmation"
-          >
-            Password Confirmation
-          </label>
-          <input
-            type="password"
+            Login
+          </FormLabel>
+          <TextField id="outlined-basic" label="Username" variant="outlined"
+          sx={{margin: '10px'}}
+          type="text"
+          name="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)} />
+          <TextField id="outlined-basic" label="Password" variant="outlined"
+          sx={{margin: '10px'}}
+          type="password"
+          name=""
+          value={password}
+          onChange={(e) => setPassword(e.target.value)} />
+          <TextField id="outlined-basic" label="Retype Password" variant="outlined"
+          sx={{margin: '10px'}}
+          type="password"
             name="password_confirmation"
             value={passwordConfirmation}
-            onChange={(e) => setPasswordConfirmation(e.target.value)}
-          />
-        </p>
-        <p><button type="submit">Sign Up</button></p>
-        <p>-- or --</p>
-        <p><Link to="/">Log In</Link></p>
-      </form>
+            onChange={(e) => setPasswordConfirmation(e.target.value)} />
+          <Button variant="contained" onClick={handleSubmit}>Sign Up</Button>
+        <p><Link to="/login">Login</Link></p>
+      </FormControl>
+      </Paper>
+    </Box>
     </div>
   )
 }

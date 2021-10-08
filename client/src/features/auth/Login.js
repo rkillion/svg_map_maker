@@ -2,6 +2,12 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Redirect, useHistory, Link } from 'react-router-dom'
 import { userUpdate } from './userSlice'
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import FormLabel from '@mui/material/FormLabel';
+import FormControl from '@mui/material/FormControl';
+import Button from '@mui/material/Button';
 
 function Login() {
   const history = useHistory()
@@ -32,41 +38,51 @@ function Login() {
       })
   }
   return (
-    <div className="authForm">
+    <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        padding: '10px',
+        width: 'auto',
+        margin: 'auto',
+        '& > :not(style)': {
+          m: 1,
+          // width: 128,
+          // height: 128,
+        },
+      }}
+      width="auto"
+    >
       <Redirect to="/" />
-      <form onSubmit={handleSubmit}>
-        <h1>Log In</h1>
-        <p>
-          <label 
+      <Paper 
+        elevation={3}
+        sx={{padding: '10px'}}
+        >
+      <FormControl onSubmit={handleSubmit}>
+          <FormLabel 
             htmlFor="username"
+            sx={{margin: '10px'}}
           >
-            Username
-          </label>
-          <input
-            type="text"
-            name="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </p>
-        <p>
-          <label 
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            name=""
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </p>
-        <p><button type="submit">Log In</button></p>
-        <p>-- or --</p>
+            Login
+          </FormLabel>
+          <TextField id="outlined-basic" label="Username" variant="outlined"
+          sx={{margin: '10px'}}
+          type="text"
+          name="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)} />
+          <TextField id="outlined-basic" label="Password" variant="outlined"
+          sx={{margin: '10px'}}
+          type="password"
+          name=""
+          value={password}
+          onChange={(e) => setPassword(e.target.value)} />
+          <Button variant="contained" onClick={handleSubmit}>Log In</Button>
         <p><Link to="/signup">Sign Up</Link></p>
-      </form>
-    </div>
+      </FormControl>
+      </Paper>
+    </Box>
   )
 }
 

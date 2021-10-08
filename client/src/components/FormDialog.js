@@ -38,7 +38,8 @@ export default function FormDialog({ formDialogueOpen, setFormDialogueOpen, form
       dispatch(postWorld(formData))
       .then(()=>{
         setFormDialogueOpen(false);
-        history.push("/viewer");
+        window.location.reload()
+        // history.push("/viewer");
       });
     }
   }

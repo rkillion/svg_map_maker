@@ -122,7 +122,8 @@ class Tile < ApplicationRecord
       tile_id: self.id,
       shape_type_id: ShapeType.find_by(title: "Sea").id,
       shape_class_id: ShapeClass.find_by(title: "Geographical").id,
-      user_id: self.user.id
+      user_id: self.user.id,
+      feature_id: self.world.features[0].id
     )
     sea_shape.set_paths
   end

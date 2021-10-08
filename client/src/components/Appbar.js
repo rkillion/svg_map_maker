@@ -25,7 +25,7 @@ export default function Appbar({ toggleDrawer }) {
         })
           .then(res => {
             if (res.ok) {
-              dispatch(userUpdate({}))
+              dispatch(userUpdate({}));
             }
           })
       }

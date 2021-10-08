@@ -23,6 +23,14 @@ class World < ApplicationRecord
   end
 
   def seed
+    feature = Feature.create(
+      user_id: self.user.id,
+      shape_type_id: ShapeType.find_by(title: "Sea").id,
+      shape_class_id: ShapeClass.find_by(title: "Geographical").id,
+      world_id: self.id,
+      title: "SeaBase",
+      color: "blue"
+    )
     tile_one = Tile.create(
       world_id: self.id,
       zoom_level: self.max_zoom_level,

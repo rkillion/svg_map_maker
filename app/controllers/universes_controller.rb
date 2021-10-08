@@ -16,7 +16,6 @@ class UniversesController < ApplicationController
 
   # POST /universes
   def create
-    byebug
     universe = Universe.new(universe_params)
     current_user.universes << universe
     if universe.save

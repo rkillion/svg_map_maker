@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tile: one
+  shape_class: one
+  shape_type: one
+  user: one
+  path_zero: MyString
+  path_one: MyString
+  path_two: MyString
+  path_three: MyString
+
+two:
+  tile: two
+  shape_class: two
+  shape_type: two
+  user: two
+  path_zero: MyString
+  path_one: MyString
+  path_two: MyString
+  path_three: MyString

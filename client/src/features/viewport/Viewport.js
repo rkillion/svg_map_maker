@@ -191,30 +191,27 @@ const centerImageEdgeDistancesUnits = tileSettings ? {
     }
   }
 
-  console.log(tiles);
-
   function handleMouseUp(e,direction) { 
     setDragPoint({})
     if(tileFocus.x===userFocus.x&&tileFocus.y===userFocus.y) {
       if(editingMode.mode) {
         let feature = features.find(feature=>feature.title===editingMode.featureTitle)
-        console.log(feature)
         let route = changePath(viewportData,e,direction,tiles[direction]);
-        console.log(route);
         let shape = tiles[direction].shapes.find(shape=>shape.feature.title===editingMode.featureTitle)
         let fill = editingMode.mode==="draw";
         if(!shape) {
           dispatch(addShape({direction: direction,shape: {
+            tile_id: tiles[direction].id,
             shape_class: feature.shape_class_id,
             shape_type: feature.shape_type_id,
             feature: feature,
-            pathArray: generatePathArray([],route,tileSettings.tile_width_units,fill) 
+            path_array: generatePathArray([],route,tileSettings.tile_width_units,fill) 
           }}));
         } else {
           dispatch(changeShapeArray({
             direction: direction,
             feature: editingMode.featureTitle,
-            pathArray: generatePathArray(shape.pathArray,route,tileSettings.tile_width_units,fill)
+            path_array: generatePathArray(shape.path_array,route,tileSettings.tile_width_units,fill)
           }))
         }
       }
@@ -238,7 +235,6 @@ return (
             handleMouseDown={handleMouseDown}
             handleMouseUp={e=>{handleMouseUp(e,direction)}}
             handleMouseMove={handleMouseMove}
-            onClick={console.log}
         />)}
     </SVGCanvas>
 )

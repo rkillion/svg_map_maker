@@ -2,6 +2,34 @@ class ShapesController < ApplicationController
   before_action :confirm_authentication
   before_action :set_shape, only: [:show, :update, :destroy]
 
+  #POST /mapedits
+  def process_mapedits
+    params[:add].each do |shape|
+      tile = current_user.tiles.find(shape[:tile_id])
+      if tile
+        new_shape = Shape.new(
+          tile_id: tile.id,
+          shape_type_id: shape[:feature][:shape_type_id],
+          shape_class_id: shape[:feature][:shape_class_id],
+          user_id: current_user.id,
+          feature_id: shape[:feature][:id],
+          path_array: shape[:path_array].to_json
+        )
+        if new_shape.valid?
+          new_shape.save
+        end
+      end
+    end
+    params[:edit].each do |shape|
+      shape_to_edit = current_user.shapes.find(shape[:id])
+      if shape_to_edit
+        shape_to_edit.update(
+          path_array: shape[:path_array].to_json
+        )
+      end
+    end
+  end
+
   # GET /shapes
   def index
     @shapes = current_user.shapes

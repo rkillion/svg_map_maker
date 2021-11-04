@@ -48,7 +48,7 @@ export function joinPath(pathArray,tileWidth,joinStrings=[" "," "," "," "," "]) 
 }
 
 export function generatePathArray(originalArray,route,width,fill) {
-    let newArray = JSON.parse(JSON.stringify(originalArray));
+    let newArray = originalArray ? JSON.parse(JSON.stringify(originalArray)) : [];
     if (newArray.length===0) {
         newArray = splitPath("",width)
     }

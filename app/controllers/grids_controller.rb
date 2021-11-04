@@ -40,12 +40,14 @@ class GridsController < ApplicationController
     def shapes_hash(tile)
         tile.shapes.map{|shape| {
             id: shape.id,
+            tile_id: shape.tile.id,
             shape_class: shape.shape_class_id,
             shape_type: shape.shape_type_id,
             path_zero: shape.path_zero,
             path_one: shape.path_one,
             path_two: shape.path_two,
             path_three: shape.path_three,
+            path_array: shape.path_array && JSON.parse(shape.path_array),
             feature: shape.feature
         }}
     end

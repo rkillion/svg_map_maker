@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_06_144702) do
+ActiveRecord::Schema.define(version: 2021_11_04_212401) do
 
   create_table "features", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2021_10_06_144702) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "feature_id"
+    t.text "path_array"
     t.index ["feature_id"], name: "index_shapes_on_feature_id"
     t.index ["shape_class_id"], name: "index_shapes_on_shape_class_id"
     t.index ["shape_type_id"], name: "index_shapes_on_shape_type_id"

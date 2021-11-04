@@ -22,7 +22,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import EditOffIcon from '@mui/icons-material/EditOff';
 import NewFeatureDialogue from './NewFeatureDialogue';
 import { useState } from 'react';
-import { changeEditingMode } from '../tiles/gridsSlice';
+import { changeEditingMode, postMapEdits } from '../tiles/gridsSlice';
 import { Button } from '@mui/material';
 import NatureIcon from '@mui/icons-material/Nature';
 
@@ -51,38 +51,38 @@ export default function FeaturesList() {
   function ClassIcon({ classTitle }) {
       if (classTitle === "Geographical"||classTitle==="Mountain") {
           return (
-            <ListItemIcon>
+            <ListItemIcon key={classTitle}>
                 <LandscapeIcon style={{color: "purple"}}/>
             </ListItemIcon>
             )
       }
       else if (classTitle === "Political") {
         return (
-          <ListItemIcon>
+          <ListItemIcon key={classTitle}>
               <AccountBalanceIcon style={{color: "red"}}/>
           </ListItemIcon>
           )
     } else if (classTitle === "Sea") {
         return (
-          <ListItemIcon>
+          <ListItemIcon key={classTitle}>
               <WaterIcon style={{color: "blue"}}/>
           </ListItemIcon>
           )
     } else if (classTitle === "Land") {
         return (
-          <ListItemIcon>
+          <ListItemIcon key={classTitle}>
               <GrassIcon style={{color: "green"}}/>
           </ListItemIcon>
           )
     } else if (classTitle === "Forest") {
         return (
-          <ListItemIcon>
+          <ListItemIcon key={classTitle}>
               <NatureIcon style={{color: "darkgreen"}}/>
           </ListItemIcon>
           )
     } else {
         return (
-          <ListItemIcon>
+          <ListItemIcon key={classTitle}>
               <LanguageIcon style={{color: "yellow"}}/>
           </ListItemIcon>
           )
@@ -165,11 +165,12 @@ export default function FeaturesList() {
             )
         })}
         {editingMode.mode ? <Button variant="contained" onClick={()=>{
-            console.log(pendingChanges);
             dispatch(changeEditingMode({
-            mode: null,
-            featureTitle: null
-        }))}}>Save Changes</Button> : null}
+                mode: null,
+                featureTitle: null
+            }));
+            dispatch(postMapEdits(pendingChanges));
+        }}>Save Changes</Button> : null}
     </List>
     <NewFeatureDialogue 
         formDialogueOpen={formDialogueOpen}

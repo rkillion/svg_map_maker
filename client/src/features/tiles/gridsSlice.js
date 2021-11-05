@@ -3,14 +3,14 @@ import Tile from "./Tile";
 
 export const fetchGrids = createAsyncThunk("grids/fetchGrids", (id) => {
     // return a Promise containing the data we want
-    return fetch(`/grids/${id}`)
+    return fetch(`api/grids/${id}`)
       .then((response) => response.json())
       .then((data) => data);
   });
 
 export const postMapEdits = createAsyncThunk("grids/postMapEdits", (pendingChanges) => {
   // return a Promise containing the data we want
-  return fetch(`/mapedits`,{
+  return fetch(`api/mapedits`,{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

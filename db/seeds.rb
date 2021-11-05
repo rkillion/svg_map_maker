@@ -13,13 +13,13 @@ puts "Generating seeds..."
 # universe = Universe.create(user_id: User.first.id,title:"BobVerse")
 # world = World.create(user_id: User.first.id,universe_id: universe.id,title:"Earth-like",max_zoom_level: 21)
 
-# geo = ShapeClass.create(title:"Geographical",user_id: User.first.id)
+geo = ShapeClass.create(title:"Geographical",user_id: User.first.id)
 # geo_named = ShapeClass.create(title:"GeoNamed",user_id: User.first.id)
-# political = ShapeClass.create(title:"Political",user_id: User.first.id)
+political = ShapeClass.create(title:"Political",user_id: User.first.id)
 # pol_named = ShapeClass.create(title:"PolNamed",user_id: User.first.id)
 
-# sea = ShapeType.create(title:"Sea",user_id: User.first.id,color: "lightblue",shape_class_id: geo.id)
-# land = ShapeType.create(title:"Land",user_id: User.first.id,color: "green",shape_class_id: geo.id)
+sea = ShapeType.create(title:"Sea",user_id: User.first.id,color: "lightblue",shape_class_id: geo.id)
+land = ShapeType.create(title:"Land",user_id: User.first.id,color: "green",shape_class_id: geo.id)
 
 # top_tile_zero = Tile.create(zoom_level: 21,world_id: 1,user_id: User.first.id)
 # top_tile_one = Tile.create(zoom_level: 21,world_id: 1,user_id: User.first.id)

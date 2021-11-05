@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const fetchShapeTypes = createAsyncThunk("shapeTypes/fetchshapeTypes", () => {
     // return a Promise containing the data we want
-    return fetch("/shape_classes")
+    return fetch("/api/shape_classes")
       .then((response) => response.json())
       .then((data) => data);
   });

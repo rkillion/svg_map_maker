@@ -1,4 +1,4 @@
-class WorldsController < ApplicationController
+class Api::WorldsController < ApplicationController
   before_action :confirm_authentication
   before_action :set_world, only: [:show, :update, :destroy]
 

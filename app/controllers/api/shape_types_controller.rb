@@ -1,4 +1,4 @@
-class ShapeTypesController < ApplicationController
+class Api::ShapeTypesController < ApplicationController
   before_action :confirm_authentication
   before_action :set_shape_type, only: [:show, :update, :destroy]
 

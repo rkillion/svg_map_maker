@@ -1,4 +1,4 @@
-class ViewsController < ApplicationController
+class Api::ViewsController < ApplicationController
   before_action :confirm_authentication
   before_action :set_view, only: [:show, :update, :destroy]
 

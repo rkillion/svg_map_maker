@@ -1,4 +1,4 @@
-class UniversesController < ApplicationController
+class Api::UniversesController < ApplicationController
   before_action :confirm_authentication
   before_action :set_universe, only: [:show, :update, :destroy]
 

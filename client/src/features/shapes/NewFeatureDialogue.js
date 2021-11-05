@@ -26,7 +26,7 @@ export default function NewFeatureDialogue({ formDialogueOpen, setFormDialogueOp
   }
 
   const handleSubmit = () => {
-        fetch("/features",{
+        fetch("api/features",{
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

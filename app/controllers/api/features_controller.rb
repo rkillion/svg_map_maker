@@ -1,4 +1,4 @@
-class FeaturesController < ApplicationController
+class Api::FeaturesController < ApplicationController
   before_action :confirm_authentication
   before_action :set_feature, only: [:show, :update, :destroy]
 

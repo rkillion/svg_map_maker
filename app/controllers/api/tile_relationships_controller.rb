@@ -1,4 +1,4 @@
-class TileRelationshipsController < ApplicationController
+class Api::TileRelationshipsController < ApplicationController
   before_action :set_tile_relationship, only: [:show, :update, :destroy]
 
   # GET /tile_relationships

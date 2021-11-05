@@ -1,4 +1,4 @@
-class TilesController < ApplicationController
+class Api::TilesController < ApplicationController
   before_action :confirm_authentication
   before_action :set_tile, only: [:show, :update, :destroy]
 

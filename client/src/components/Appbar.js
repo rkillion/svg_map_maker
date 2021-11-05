@@ -20,7 +20,7 @@ export default function Appbar({ toggleDrawer }) {
   const dispatch = useDispatch()
 
   const handleLogout = () => {
-        fetch(`/logout`, {
+        fetch(`api/logout`, {
           method: 'DELETE'
         })
           .then(res => {

@@ -2,14 +2,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const fetchWorlds = createAsyncThunk("worlds/fetchWorlds", (id) => {
     // return a Promise containing the data we want
-    return fetch(`/worlds/${id}`)
+    return fetch(`/api/worlds/${id}`)
       .then((response) => response.json())
       .then((data) => data);
   });
 
   export const postWorld = createAsyncThunk("worlds/postWorld", (postConfig) => {
     // return a Promise containing the data we want
-    return fetch("/worlds",{
+    return fetch("/api/worlds",{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

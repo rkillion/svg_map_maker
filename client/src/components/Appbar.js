@@ -66,7 +66,7 @@ export default function Appbar({ toggleDrawer }) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            SVG Fantasy Mapmaker
+            Fantasy Map Maker
           </Typography>
           {user.id && (
             <div>

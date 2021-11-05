@@ -6,7 +6,7 @@ ruby '2.7.4'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3', '~> 1.4'
+# gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
 # Use Active Model has_secure_password
@@ -32,3 +32,5 @@ gem "active_model_serializers", "~> 0.10.12"
 gem "foreman", "~> 0.87.2"
 
 gem "bcrypt", "~> 3.1"
+
+gem "pg", "~> 1.2"

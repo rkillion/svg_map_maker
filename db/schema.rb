@@ -12,11 +12,14 @@
 
 ActiveRecord::Schema.define(version: 2021_11_04_212401) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "features", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "shape_class_id", null: false
-    t.integer "shape_type_id", null: false
-    t.integer "world_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "shape_class_id", null: false
+    t.bigint "shape_type_id", null: false
+    t.bigint "world_id", null: false
     t.string "title"
     t.string "color"
     t.datetime "created_at", precision: 6, null: false
@@ -29,7 +32,7 @@ ActiveRecord::Schema.define(version: 2021_11_04_212401) do
 
   create_table "shape_classes", force: :cascade do |t|
     t.string "title"
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.string "color"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -38,9 +41,9 @@ ActiveRecord::Schema.define(version: 2021_11_04_212401) do
 
   create_table "shape_types", force: :cascade do |t|
     t.string "title"
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.string "color"
-    t.integer "shape_class_id", null: false
+    t.bigint "shape_class_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["shape_class_id"], name: "index_shape_types_on_shape_class_id"
@@ -48,17 +51,17 @@ ActiveRecord::Schema.define(version: 2021_11_04_212401) do
   end
 
   create_table "shapes", force: :cascade do |t|
-    t.integer "tile_id", null: false
-    t.integer "shape_class_id", null: false
-    t.integer "shape_type_id", null: false
-    t.integer "user_id", null: false
+    t.bigint "tile_id", null: false
+    t.bigint "shape_class_id", null: false
+    t.bigint "shape_type_id", null: false
+    t.bigint "user_id", null: false
     t.string "path_zero"
     t.string "path_one"
     t.string "path_two"
     t.string "path_three"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "feature_id"
+    t.bigint "feature_id"
     t.text "path_array"
     t.index ["feature_id"], name: "index_shapes_on_feature_id"
     t.index ["shape_class_id"], name: "index_shapes_on_shape_class_id"
@@ -77,9 +80,9 @@ ActiveRecord::Schema.define(version: 2021_11_04_212401) do
   end
 
   create_table "tiles", force: :cascade do |t|
-    t.integer "world_id", null: false
+    t.bigint "world_id", null: false
     t.integer "zoom_level"
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_tiles_on_user_id"
@@ -87,7 +90,7 @@ ActiveRecord::Schema.define(version: 2021_11_04_212401) do
   end
 
   create_table "universes", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -103,26 +106,26 @@ ActiveRecord::Schema.define(version: 2021_11_04_212401) do
   end
 
   create_table "views", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "tile_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "tile_id", null: false
     t.float "focus_x"
     t.float "focus_y"
     t.string "title"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "world_id", null: false
+    t.bigint "world_id", null: false
     t.index ["tile_id"], name: "index_views_on_tile_id"
     t.index ["user_id"], name: "index_views_on_user_id"
     t.index ["world_id"], name: "index_views_on_world_id"
   end
 
   create_table "worlds", force: :cascade do |t|
-    t.integer "universe_id", null: false
+    t.bigint "universe_id", null: false
     t.string "title"
     t.integer "max_zoom_level"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.index ["universe_id"], name: "index_worlds_on_universe_id"
     t.index ["user_id"], name: "index_worlds_on_user_id"
   end

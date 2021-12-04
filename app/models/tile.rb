@@ -88,7 +88,6 @@ class Tile < ApplicationRecord
     sub_tile = Tile.create(zoom_level: self.zoom_level.to_i-1,world_id: self.world.id,user_id: self.user.id)
     self.set_relationship(sub_tile,"child",quadrant)
     end
-
     sub_tile
   end
 

@@ -112,8 +112,18 @@ class Tile < ApplicationRecord
 
       #also check to see if neighboring tiles exist so you can make the connections to those as well
 
-      [next_tile_zero,next_tile_one,next_tile_two,next_tile_three]
+      #lastly, new shapes need to be created for each child. First get all the shapes from the parent tile
+      child_tiles = [next_tile_zero,next_tile_one,next_tile_two,next_tile_three]
+      make_subshapes(next_tile_zero,0)
+      make_subshapes(next_tile_one,1)
+      make_subshapes(next_tile_two,2)
+      make_subshapes(next_tile_three,3)
+      child_tiles
     end
+  end
+
+  def subtiles?
+    false unless self.tile_relationships.find_by(relationship: "child")
   end
 
   def seed
@@ -127,9 +137,39 @@ class Tile < ApplicationRecord
     sea_shape.set_paths
   end
 
+  def test_subShapes
+    pretend_child = Tile.second
+    puts "Quadrant 0 tile:"
+    make_subshapes(pretend_child,0)
+    puts ""
+    puts "Quadrant 1 tile:"
+    make_subshapes(pretend_child,1)
+    puts ""
+    puts "Quadrant 2 tile:"
+    make_subshapes(pretend_child,2)
+    puts ""
+    puts "Quadrant 3 tile:"
+    make_subshapes(pretend_child,3)
+    puts ""
+  end
+
   private
+
+  def make_subshapes(child_tile,quadrant)
+    self.shapes.each do |shape|
+      sub_shape = Shape.create(
+        tile_id: child_tile[:id],
+        shape_class_id: shape[:shape_class_id],
+        shape_type_id: shape[:shape_type_id],
+        user_id: shape[:user_id],
+        feature_id: shape[:feature_id],
+        path_array: shape.make_subpath(quadrant)
+      )
+    end
+  end
 
   def opposite_of
     {parent: "child",child:"parent",east:"west",west:"east",north:"south",south:"north"}
   end
+
 end

@@ -48,7 +48,8 @@ function AuthenticatedApp() {
                     x: data.payload.views[0].focus_x,
                     y: data.payload.views[0].focus_y,
                 }));
-                dispatch(fetchGrids(data.payload.views[0].tile_id))
+                // dispatch(fetchGrids(data.payload.views[0].tile_id))
+                dispatch(fetchGrids(12));
                 // .then(console.log)
             })
     }

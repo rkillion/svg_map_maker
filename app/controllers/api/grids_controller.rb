@@ -4,7 +4,7 @@ class Api::GridsController < ApplicationController
 
     def show
         # Run make subtiles on each tile in the grid unless it has subtiles already. You'll need to make the grid object first to reference it, then you can render it at the end. When making the sub-tile, you'll need to add another parameter: the grid. And you'll need to adjust make_subtile to accomodate that. This is because each subtile also needs to be able to link its north, south, east, and west tiles that belong to different parent tiles. You'll also need to add functionality to make-subtiles so that new Shapes are created for them with their path arrays copied from the matching quadrant. Shape updates will then also have to update child shapes and parent shapes
-        render json: {
+        grid = {
             settings: @tile.settings,
             tiles: {
                 center: tile_hash(@tile),
@@ -18,6 +18,11 @@ class Api::GridsController < ApplicationController
                 southwest: tile_hash(@tile.southwest)
             }
         }
+        # check each tile in the grid to see if it has subtiles
+        grid[:tiles].each do |position, tile|
+            puts "Checking #{position} tile: #{tile&&tile[:id]}"
+        end
+        render json: grid
     end
 
     private
@@ -32,6 +37,7 @@ class Api::GridsController < ApplicationController
             {
                 id: tile.id,
                 zoom_level: tile.zoom_level,
+                has_subtiles: tile.subtiles?,
                 shapes: shapes_hash(tile)
             }
         else

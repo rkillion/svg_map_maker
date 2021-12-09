@@ -55,6 +55,7 @@ class Shape < ApplicationRecord
         path_two: paths[2],
         path_three: paths[3]
       )
+      self.update(path_array: paths.to_json)
     end
   end
 
@@ -75,7 +76,50 @@ class Shape < ApplicationRecord
     "#{path_m[quadrant]}#{path_r}"
   end
 
+  def make_subpath(quadrant)
+    if !self.path_array
+      return nil
+    end
+    quadrant_path = JSON.parse(self.path_array)[quadrant]
+    if quadrant_path.class == String
+      return split_path(quadrant_path).to_json
+    end
+    doubled_string = quadrant_path.to_json.gsub(/\b(\d+)/){|n|n.to_i*2}
+    doubled_string
+  end
+
+  def test_split
+    split_path(JSON.parse(self.path_array)[0])
+  end
+
   private
+
+  def split_path(path)
+    fill = path.include?("h")
+    puts path
+    # numbers_not_zero = path.scan(/\b(\d+)/).select{|n|n[0].to_i>0}[0][0].to_i
+    return [
+        genUnitPath(0,fill,2048),
+        genUnitPath(1,fill,2048),
+        genUnitPath(2,fill,2048),
+        genUnitPath(3,fill,2048)
+    ]
+  end
+
+  def genUnitPath(quadrant,fill=false,width)
+    distance = width/2
+    pathM = [
+      "m 0 0",
+      "m #{distance} 0",
+      "m #{-distance} #{distance}",
+      "m #{distance} 0"
+    ]
+    pathR=""
+    if fill
+      pathR=" h #{distance} v #{distance} h #{-distance} v #{-distance}"
+    end
+    "#{pathM[quadrant]}#{pathR}"
+  end
 
   def get_fill_distance(zoom_level)
     settings = self.tile.settings

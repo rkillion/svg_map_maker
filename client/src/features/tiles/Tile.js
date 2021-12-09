@@ -6,7 +6,7 @@ function Tile({ direction, tile, centerImageMCoord, handleMouseDown, handleMouse
     const tileSettings = useSelector(state=>state.grids.primary.settings)
     const coordinateOffsets = {
         northeast: {
-            x: -tileSettings.tile_width_units,
+            x: tileSettings.tile_width_units,
             y: -tileSettings.tile_width_units
         },
         north: {
@@ -14,7 +14,7 @@ function Tile({ direction, tile, centerImageMCoord, handleMouseDown, handleMouse
             y: -tileSettings.tile_width_units
         },
         northwest: {
-            x: tileSettings.tile_width_units,
+            x: -tileSettings.tile_width_units,
             y: -tileSettings.tile_width_units
         },
         west: {
@@ -51,6 +51,7 @@ function Tile({ direction, tile, centerImageMCoord, handleMouseDown, handleMouse
     function parsePath(shape) {
         let shapePath;
         if (shape.path_array) {
+            console.log(shape.path_array);
             shapePath = joinPath(shape.path_array,tileSettings.tile_width_units)
         } else {
             shapePath = `${shape.path_zero} ${shape.path_one} ${shape.path_two} ${shape.path_three}`

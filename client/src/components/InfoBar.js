@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import FeaturesList from '../features/shapes/FeaturesList';
+import ZoomControls from './ZoomControls';
 
 export default function InfoBar() {
   return (
@@ -9,6 +10,7 @@ export default function InfoBar() {
         elevation={3}
         sx={{
             display: 'flex',
+            flexFlow: 'column nowrap',
             width: '300px',
             marginTop: '90px',
             marginLeft: '20px',
@@ -16,6 +18,7 @@ export default function InfoBar() {
             position: 'fixed'
         }}
       >
+        <ZoomControls />
         <FeaturesList />
       </Paper>
   );

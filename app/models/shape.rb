@@ -8,7 +8,7 @@ class Shape < ApplicationRecord
   #you can create a formula that will generate a full path at a specified point by providing a quadrant path i.e. 0112
 
   def set_paths(type="full",override=false)
-    if override || ((!path_zero && !path_one) && (!path_two && !path_three))
+    if override || !self.path_array
       paths = []
       case type
       when "full"
@@ -17,6 +17,13 @@ class Shape < ApplicationRecord
           generate_path(1,true),
           generate_path(2,true),
           generate_path(3,true)
+        ]
+      when "empty"
+        paths = [
+          generate_path(0,false),
+          generate_path(1,false),
+          generate_path(2,false),
+          generate_path(3,false)
         ]
       when "checker"
         paths = [
@@ -49,12 +56,12 @@ class Shape < ApplicationRecord
             generate_path(3,false,"",self.tile.settings[:zoom_level]-1)],self.tile.settings[:zoom_level]-1))
           ]
       end
-      self.update(
-        path_zero: paths[0],
-        path_one: paths[1],
-        path_two: paths[2],
-        path_three: paths[3]
-      )
+      # self.update(
+      #   path_zero: paths[0],
+      #   path_one: paths[1],
+      #   path_two: paths[2],
+      #   path_three: paths[3]
+      # )
       self.update(path_array: paths.to_json)
     end
   end
@@ -86,6 +93,14 @@ class Shape < ApplicationRecord
     end
     doubled_string = quadrant_path.to_json.gsub(/\b(\d+)/){|n|n.to_i*2}
     doubled_string
+  end
+
+  def update_from_child(new_path,quadrant)
+    halfed_path_string = new_path.to_json.gsub(/\b(\d+)/){|n|n.to_i/2}
+    current_path = JSON.parse(self.path_array)
+    current_path[quadrant] = JSON.parse(halfed_path_string)
+    # byebug
+    self.update(path_array: current_path.to_json)
   end
 
   def test_split

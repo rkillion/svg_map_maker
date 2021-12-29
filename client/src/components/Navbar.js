@@ -6,15 +6,14 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { useDispatch, useSelector } from 'react-redux'
 import { userUpdate } from '../features/auth/userSlice';
+import styled from 'styled-components';
 
-export default function Appbar({ toggleDrawer }) {
+export default function Navbar({ toggleDrawer }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const user = useSelector((state)=>state.user.current)
   const dispatch = useDispatch()
@@ -40,23 +39,7 @@ export default function Appbar({ toggleDrawer }) {
   };
 
   return (
-    <Box sx={{ 
-      flexGrow: 1
-      }}>
-      <FormGroup>
-        {/* <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
-          label={auth ? 'Logout' : 'Login'}
-        /> */}
-      </FormGroup>
-      <AppBar position="fixed">
-        <Toolbar>
+    <Nav>
           <IconButton
             size="large"
             edge="start"
@@ -101,8 +84,17 @@ export default function Appbar({ toggleDrawer }) {
               </Menu>
             </div>
           )}
-        </Toolbar>
-      </AppBar>
-    </Box>
+    </Nav>
   );
 }
+
+const Nav = styled.div`
+    position: fixed;
+    width: 100%;
+    padding-left: 10px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1
+`

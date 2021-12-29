@@ -19,8 +19,12 @@ class Api::GridsController < ApplicationController
             }
         }
         # check each tile in the grid to see if it has subtiles
-        grid[:tiles].each do |position, tile|
-            puts "Checking #{position} tile: #{tile&&tile[:id]}"
+        grid[:tiles].each do |position, tile_hash|
+            tile = tile_hash&&Tile.find(tile_hash[:id])
+            # puts "Checking #{position} tile #{tile_hash&&tile_hash[:id]}: #{tile&&tile.subtiles?}"
+            # if tile&&!tile.subtiles?
+            #     tile.make_sub_tiles
+            # end
         end
         render json: grid
     end
@@ -34,10 +38,17 @@ class Api::GridsController < ApplicationController
     def tile_hash(tile)
         # the tile also needs to return an array of the four ids of its child tiles, the front end needs that so it knows what tile to ask for when zooming in 
         if tile
+            thisParent = TileRelationship.find_by(tile_id: tile.id,relationship: "parent")
+            parent_hash = {}
+            if thisParent
+                parent_hash = {id: thisParent.relative_id, quadrant: thisParent.reference}
+            end
             {
                 id: tile.id,
                 zoom_level: tile.zoom_level,
                 has_subtiles: tile.subtiles?,
+                subtiles: tile.subtiles&.map{|subtile|subtile.id},
+                parent: parent_hash,
                 shapes: shapes_hash(tile)
             }
         else
@@ -46,7 +57,7 @@ class Api::GridsController < ApplicationController
     end
 
     def shapes_hash(tile)
-        tile.shapes.map{|shape| {
+        shapes_array = tile.shapes.map{|shape| {
             id: shape.id,
             tile_id: shape.tile.id,
             shape_class: shape.shape_class_id,
@@ -58,5 +69,6 @@ class Api::GridsController < ApplicationController
             path_array: shape.path_array && JSON.parse(shape.path_array),
             feature: shape.feature
         }}
+        shapes_array.sort{|a,b|a[:feature][:id]<=>b[:feature][:id]}
     end
 end

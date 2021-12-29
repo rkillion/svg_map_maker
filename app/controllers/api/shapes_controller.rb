@@ -19,6 +19,8 @@ class Api::ShapesController < ApplicationController
           new_shape.save
         end
       end
+      # check up the parent chain up to five levels and update each tile
+      # any subtiles that already exist would need to be updated
     end
     params[:edit].each do |shape|
       shape_to_edit = current_user.shapes.find(shape[:id])
@@ -26,6 +28,8 @@ class Api::ShapesController < ApplicationController
         shape_to_edit.update(
           path_array: shape[:path_array].to_json
         )
+        shape_to_edit.tile.update_shape_on_parent_tiles(shape,0)
+        shape_to_edit.tile.update_shape_on_child_tiles(shape[:feature][:id])
       end
     end
   end

@@ -13,6 +13,7 @@ import * as React from 'react';
 import UniversePage from './UniversePage';
 import FormDialog from './FormDialog';
 import InfoBar from './InfoBar';
+import Navbar from './Navbar';
 
 function AuthenticatedApp() {
     const [sidebarState, setSidebarState] = React.useState({
@@ -48,8 +49,8 @@ function AuthenticatedApp() {
                     x: data.payload.views[0].focus_x,
                     y: data.payload.views[0].focus_y,
                 }));
-                // dispatch(fetchGrids(data.payload.views[0].tile_id))
-                dispatch(fetchGrids(12));
+                dispatch(fetchGrids(data.payload.views[0].tile_id))
+                // dispatch(fetchGrids(12));
                 // .then(console.log)
             })
     }
@@ -74,9 +75,10 @@ function AuthenticatedApp() {
 
     return (
         <main>
-            <Appbar 
+            {/* <Appbar 
                 toggleDrawer={toggleDrawer}
-            />
+            /> */}
+            <Navbar toggleDrawer={toggleDrawer}/>
             <Sidebar 
                 toggleDrawer={toggleDrawer}
                 sidebarState={sidebarState}

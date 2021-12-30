@@ -80,6 +80,7 @@ const gridsSlice = createSlice({
         },
         [postMapEdits.fulfilled](state, action) {
           state.status = "idle";
+          state.pendingChanges = {add: [],edit: []};
         }
       }
   });

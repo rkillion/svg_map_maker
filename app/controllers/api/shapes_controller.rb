@@ -17,6 +17,8 @@ class Api::ShapesController < ApplicationController
         )
         if new_shape.valid?
           new_shape.save
+          new_shape.tile.update_shape_on_parent_tiles(shape,0)
+          new_shape.tile.update_shape_on_child_tiles(shape[:feature][:id])
         end
       end
       # check up the parent chain up to five levels and update each tile
@@ -32,6 +34,7 @@ class Api::ShapesController < ApplicationController
         shape_to_edit.tile.update_shape_on_child_tiles(shape[:feature][:id])
       end
     end
+    render json: {}, response: :no_content
   end
 
   # GET /shapes

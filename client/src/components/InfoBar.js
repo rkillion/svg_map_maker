@@ -15,7 +15,9 @@ export default function InfoBar() {
             marginTop: '90px',
             marginLeft: '20px',
             minHeight: '100px',
-            position: 'fixed'
+            maxHeight: '500px',
+            position: 'fixed',
+            overflow: 'scroll'
         }}
       >
         <ZoomControls />

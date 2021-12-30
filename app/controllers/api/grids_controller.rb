@@ -22,9 +22,10 @@ class Api::GridsController < ApplicationController
         grid[:tiles].each do |position, tile_hash|
             tile = tile_hash&&Tile.find(tile_hash[:id])
             # puts "Checking #{position} tile #{tile_hash&&tile_hash[:id]}: #{tile&&tile.subtiles?}"
-            # if tile&&!tile.subtiles?
-            #     tile.make_sub_tiles
-            # end
+            if tile&&!tile.subtiles?
+                tile.make_sub_tiles
+            end
+            # also, if the center tile has a parent ti
         end
         render json: grid
     end

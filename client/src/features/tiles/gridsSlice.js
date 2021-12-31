@@ -27,6 +27,7 @@ const initialState = {
       mode: null,
       featureTitle: null
     },
+    highlightFeature: null,
     pendingChanges: {add: [],edit: []},
     status: "idle", // loading state
 };
@@ -64,6 +65,10 @@ const gridsSlice = createSlice({
             state.pendingChanges.edit.push(shapeToAddToEdits);
           }
         }
+      },
+      //takes feature_id
+      changeHighlightFeature(state,action) {
+        state.highlightFeature = action.payload;
       }
     },
       // async actions
@@ -85,6 +90,6 @@ const gridsSlice = createSlice({
       }
   });
 
-  export const { changeEditingMode, addPendingChange, addShape, changeShapeArray } = gridsSlice.actions
+  export const { changeEditingMode, addPendingChange, addShape, changeShapeArray, changeHighlightFeature } = gridsSlice.actions
 
   export default gridsSlice.reducer;

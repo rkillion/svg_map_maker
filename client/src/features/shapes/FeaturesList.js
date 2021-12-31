@@ -22,9 +22,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import EditOffIcon from '@mui/icons-material/EditOff';
 import NewFeatureDialogue from './NewFeatureDialogue';
 import { useState } from 'react';
-import { changeEditingMode, postMapEdits } from '../tiles/gridsSlice';
+import { changeEditingMode, changeHighlightFeature, postMapEdits } from '../tiles/gridsSlice';
 import { Button } from '@mui/material';
 import NatureIcon from '@mui/icons-material/Nature';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
 
 export default function FeaturesList() {
     const shapeTypes = useSelector(state=>state.shapeTypes.entities)
@@ -80,6 +81,12 @@ export default function FeaturesList() {
               <NatureIcon style={{color: "darkgreen"}}/>
           </ListItemIcon>
           )
+    } else if (classTitle === "City") {
+        return (
+          <ListItemIcon key={classTitle}>
+              <LocationCityIcon style={{color: "orange"}}/>
+          </ListItemIcon>
+          )
     } else {
         return (
           <ListItemIcon key={classTitle}>
@@ -128,7 +135,11 @@ export default function FeaturesList() {
                                         {!features ? null : features.filter(feature=>feature.shape_class_id===shapeClass.id&&feature.shape_type_id===shapeType.id).map(feature=>{
                                             return (
                                                 <ListItem key={feature.id}>
-                                                    <ListItemButton sx={{ pl: 8 }}>
+                                                    <ListItemButton 
+                                                        sx={{ pl: 8 }}
+                                                        onMouseOver={()=>dispatch(changeHighlightFeature(feature.id))}
+                                                        onMouseOut={()=>dispatch(changeHighlightFeature(null))}
+                                                        >
                                                         <ListItemText primary={feature.title} />
                                                     </ListItemButton>
                                                     <Tooltip title="Add To">

@@ -3,7 +3,8 @@ import { joinPath } from '../shapes/pathFunctions';
 
 
 function Tile({ direction, tile, centerImageMCoord, handleMouseDown, handleMouseUp, handleMouseMove}) {
-    const tileSettings = useSelector(state=>state.grids.primary.settings)
+    const tileSettings = useSelector(state=>state.grids.primary.settings);
+    const highlightFeature = useSelector(state=>state.grids.highlightFeature);
     const coordinateOffsets = {
         northeast: {
             x: tileSettings.tile_width_units,
@@ -59,7 +60,11 @@ function Tile({ direction, tile, centerImageMCoord, handleMouseDown, handleMouse
     }
 
     function getColor(shape) {
-        return shapeTypes.find(shapeClass=>shapeClass.id===shape.shape_class).shape_types.find(type=>type.id===shape.shape_type).color
+        if (shape.feature.id===highlightFeature) {
+            return "red";
+        } else {
+            return shapeTypes.find(shapeClass=>shapeClass.id===shape.shape_class).shape_types.find(type=>type.id===shape.shape_type).color
+        }
     }
 
     return (
